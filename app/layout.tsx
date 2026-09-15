@@ -1,5 +1,16 @@
 import type { Metadata } from "next";
+import { Inter, Source_Serif_4 } from "next/font/google";
 import "./globals.css";
+
+const inter = Inter({
+  subsets: ["latin"],
+  variable: "--font-sans",
+});
+
+const sourceSerif = Source_Serif_4({
+  subsets: ["latin"],
+  variable: "--font-serif",
+});
 
 export const metadata: Metadata = {
   title: "Job Application Tracker",
@@ -12,8 +23,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en">
-      <body className="bg-gray-50 min-h-screen text-gray-900">
+    <html lang="en" className={`${inter.variable} ${sourceSerif.variable}`}>
+      <body className="bg-paper text-ink font-sans min-h-screen">
         {children}
       </body>
     </html>
