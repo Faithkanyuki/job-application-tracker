@@ -19,6 +19,7 @@ interface Application {
   status: "SAVED" | "APPLIED" | "INTERVIEW" | "OFFER" | "REJECTED";
   appliedDate: string | null;
   notes: string | null;
+  updatedAt: string;
 }
 
 export default function JobDetailPage({
@@ -170,7 +171,12 @@ export default function JobDetailPage({
         )}
       </div>
 
-      <h2 className="text-lg font-medium mb-3">Application tracking</h2>
+            <h2 className="text-lg font-medium mb-1">Application tracking</h2>
+      <p className="text-sm text-stone mb-4">
+        {application
+          ? "Last updated " + new Date(application.updatedAt || "").toLocaleDateString()
+          : "You haven't started tracking this one yet."}
+      </p>
 
       <form onSubmit={handleSaveApplication} className="space-y-4">
         <div>
