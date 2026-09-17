@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, use } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 
@@ -22,11 +22,12 @@ interface Application {
   updatedAt: string;
 }
 
-export default function JobDetailPage({
-  params,
-}: {
-  params: { id: string };
-}) {
+export default function JobDetailPage(
+  props: {
+    params: Promise<{ id: string }>;
+  }
+) {
+  const params = use(props.params);
   const router = useRouter();
   const [job, setJob] = useState<Job | null>(null);
   const [application, setApplication] = useState<Application | null>(null);

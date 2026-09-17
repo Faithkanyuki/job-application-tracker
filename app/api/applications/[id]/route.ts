@@ -16,10 +16,8 @@ const updateApplicationSchema = z.object({
 const uuidSchema = z.string().uuid();
 
 // GET /api/applications/:id — view one application, only if owned by the requester
-export async function GET(
-  req: NextRequest,
-  { params }: { params: { id: string } }
-) {
+export async function GET(req: NextRequest, props: { params: Promise<{ id: string }> }) {
+  const params = await props.params;
   try {
     const session = await getCurrentSession();
     if (!session) {
@@ -57,10 +55,8 @@ export async function GET(
 }
 
 // PATCH /api/applications/:id — update status/notes, only if owned by the requester
-export async function PATCH(
-  req: NextRequest,
-  { params }: { params: { id: string } }
-) {
+export async function PATCH(req: NextRequest, props: { params: Promise<{ id: string }> }) {
+  const params = await props.params;
   try {
     const session = await getCurrentSession();
     if (!session) {
@@ -120,10 +116,8 @@ export async function PATCH(
 }
 
 // DELETE /api/applications/:id — delete, only if owned by the requester
-export async function DELETE(
-  req: NextRequest,
-  { params }: { params: { id: string } }
-) {
+export async function DELETE(req: NextRequest, props: { params: Promise<{ id: string }> }) {
+  const params = await props.params;
   try {
     const session = await getCurrentSession();
     if (!session) {
