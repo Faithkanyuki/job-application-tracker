@@ -90,55 +90,72 @@ export default function HomePage() {
       </header>
 
       {/* Hero */}
-      <section className="max-w-6xl mx-auto px-6 pt-16 pb-12 text-center">
-        <h1 className="font-serif text-4xl md:text-5xl text-ink leading-tight max-w-2xl mx-auto">
-          Keep every application in one place.
-        </h1>
-        <p className="text-stone mt-5 text-lg max-w-xl mx-auto">
-          Job hunting means juggling dozens of roles at once. Save the ones
-          you're interested in, track where each one stands, and never lose
-          track of what happens next.
-        </p>
-        <div className="mt-8 flex items-center justify-center gap-4">
-          <Link
-            href="/signup"
-            className="bg-amber text-paper rounded-full px-6 py-3 text-sm font-medium hover:opacity-90"
-          >
-            Start tracking for free
-          </Link>
-          <Link href="/signin" className="text-sm text-ink hover:text-amber">
-            I already have an account
-          </Link>
+      <section className="max-w-6xl mx-auto px-6 pt-16 pb-20 grid md:grid-cols-2 gap-12 items-center">
+        <div>
+          <h1 className="font-serif text-4xl md:text-5xl text-ink leading-tight">
+            Keep every application in one place.
+          </h1>
+          <p className="text-stone mt-5 text-lg max-w-md">
+            Job hunting means juggling dozens of roles at once. Save the ones
+            you're interested in, track where each one stands, and never lose
+            track of what happens next.
+          </p>
+          <div className="mt-8 flex items-center gap-4">
+            <Link
+              href="/signup"
+              className="bg-amber text-paper rounded-full px-6 py-3 text-sm font-medium hover:opacity-90"
+            >
+              Start tracking for free
+            </Link>
+            <Link href="/signin" className="text-sm text-ink hover:text-amber">
+              I already have an account
+            </Link>
+          </div>
+          <p className="text-xs text-stone mt-6">
+            Free to use &middot; Track unlimited applications &middot; No
+            credit card required
+          </p>
         </div>
-        <p className="text-xs text-stone mt-6">
-          Free to use &middot; Track unlimited applications &middot; No credit
-          card required
-        </p>
+
+        <PipelineChart />
       </section>
 
-      {/* Preview */}
-      <section className="max-w-3xl mx-auto px-6 pb-20">
-        <div className="border border-hairline rounded-xl bg-white p-5 space-y-3">
-          <PreviewRow
-            title="Frontend Engineer"
-            company="Northwind Studio"
-            status="OFFER"
-          />
-          <PreviewRow
-            title="Product Designer"
-            company="Fieldstone Co."
-            status="INTERVIEW"
-          />
-          <PreviewRow
-            title="Backend Developer"
-            company="Ravine Labs"
-            status="APPLIED"
-          />
-          <PreviewRow
-            title="Support Engineer"
-            company="Talkcoms"
-            status="SAVED"
-          />
+      {/* Pipeline preview */}
+      <section className="border-t border-hairline bg-white">
+        <div className="max-w-6xl mx-auto px-6 py-16 grid md:grid-cols-2 gap-12 items-center">
+          <div>
+            <h2 className="font-serif text-2xl text-ink mb-3">
+              See your pipeline at a glance
+            </h2>
+            <p className="text-sm text-stone mb-6 max-w-sm">
+              Every role you're tracking, its current stage, and what's
+              waiting on you next — all on one screen, updated the moment
+              anything changes.
+            </p>
+            <DistributionDonut />
+          </div>
+          <div className="border border-hairline rounded-xl bg-paper p-5 space-y-3">
+            <PreviewRow
+              title="Frontend Engineer"
+              company="Northwind Studio"
+              status="OFFER"
+            />
+            <PreviewRow
+              title="Product Designer"
+              company="Fieldstone Co."
+              status="INTERVIEW"
+            />
+            <PreviewRow
+              title="Backend Developer"
+              company="Ravine Labs"
+              status="APPLIED"
+            />
+            <PreviewRow
+              title="Support Engineer"
+              company="Talkcoms"
+              status="SAVED"
+            />
+          </div>
         </div>
       </section>
 
@@ -342,6 +359,133 @@ function FeatureCard({ title, body }: { title: string; body: string }) {
     <div className="border border-hairline rounded-lg p-5">
       <h3 className="text-ink font-medium mb-2">{title}</h3>
       <p className="text-sm text-stone">{body}</p>
+    </div>
+  );
+}
+
+function PipelineChart() {
+  const stages = [
+    { label: "Saved", value: 12, color: "#E8E2D6", text: "#1C2B3A" },
+    { label: "Applied", value: 8, color: "#1C2B3A", text: "#F7F4EE" },
+    { label: "Interview", value: 4, color: "#D97A34", text: "#F7F4EE" },
+    { label: "Offer", value: 1, color: "#5C7C6F", text: "#F7F4EE" },
+  ];
+  const max = Math.max(...stages.map((s) => s.value));
+  const chartHeight = 220;
+
+  return (
+    <div className="border border-hairline rounded-xl bg-white p-6">
+      <p className="text-xs text-stone mb-6">
+        Your pipeline this month
+      </p>
+      <svg
+        viewBox={"0 0 320 " + (chartHeight + 40)}
+        className="w-full"
+        role="img"
+        aria-label="Bar chart showing applications by stage: 12 saved, 8 applied, 4 interview, 1 offer"
+      >
+        {stages.map((stage, i) => {
+          const barWidth = 56;
+          const gap = 20;
+          const x = i * (barWidth + gap) + 16;
+          const barHeight = (stage.value / max) * chartHeight;
+          const y = chartHeight - barHeight;
+          return (
+            <g key={stage.label}>
+              <rect
+                x={x}
+                y={y}
+                width={barWidth}
+                height={barHeight}
+                rx={8}
+                fill={stage.color}
+              />
+              <text
+                x={x + barWidth / 2}
+                y={y + 22}
+                textAnchor="middle"
+                fontSize="14"
+                fontWeight="600"
+                fill={stage.text}
+              >
+                {stage.value}
+              </text>
+              <text
+                x={x + barWidth / 2}
+                y={chartHeight + 22}
+                textAnchor="middle"
+                fontSize="11"
+                fill="#8A8478"
+              >
+                {stage.label}
+              </text>
+            </g>
+          );
+        })}
+      </svg>
+    </div>
+  );
+}
+
+function DistributionDonut() {
+  const segments = [
+    { label: "Saved", value: 12, color: "#E8E2D6" },
+    { label: "Applied", value: 8, color: "#1C2B3A" },
+    { label: "Interview", value: 4, color: "#D97A34" },
+    { label: "Offer", value: 1, color: "#5C7C6F" },
+  ];
+  const total = segments.reduce((sum, s) => sum + s.value, 0);
+  const radius = 40;
+  const circumference = 2 * Math.PI * radius;
+  let offset = 0;
+
+  return (
+    <div className="flex items-center gap-6">
+      <svg width="110" height="110" viewBox="0 0 110 110">
+        <g transform="rotate(-90 55 55)">
+          {segments.map((seg) => {
+            const fraction = seg.value / total;
+            const dash = fraction * circumference;
+            const circle = (
+              <circle
+                key={seg.label}
+                cx="55"
+                cy="55"
+                r={radius}
+                fill="none"
+                stroke={seg.color}
+                strokeWidth="16"
+                strokeDasharray={dash + " " + (circumference - dash)}
+                strokeDashoffset={-offset}
+              />
+            );
+            offset += dash;
+            return circle;
+          })}
+        </g>
+        <text
+          x="55"
+          y="60"
+          textAnchor="middle"
+          fontSize="20"
+          fontWeight="600"
+          fill="#1C2B3A"
+        >
+          {total}
+        </text>
+      </svg>
+      <ul className="space-y-1.5 text-sm">
+        {segments.map((seg) => (
+          <li key={seg.label} className="flex items-center gap-2">
+            <span
+              className="w-2.5 h-2.5 rounded-full inline-block"
+              style={{ backgroundColor: seg.color }}
+            />
+            <span className="text-ink">{seg.label}</span>
+            <span className="text-stone">{seg.value}</span>
+          </li>
+        ))}
+      </ul>
     </div>
   );
 }
