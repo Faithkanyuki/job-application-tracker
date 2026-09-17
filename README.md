@@ -1,4 +1,7 @@
+
 # Job Application Tracker
+
+![Job Application Tracker landing page](./screenshots/landing-page.png.jpeg)
 
 A secure job application tracker where users can save roles they're interested in, track progress on each one (Saved → Applied → Interview → Offer → Rejected), and keep private notes — built as a practical competency project.
 
