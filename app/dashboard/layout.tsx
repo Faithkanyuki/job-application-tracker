@@ -30,11 +30,9 @@ export default function DashboardLayout({
       }
       setUser(data.user);
     });
-  }, []);
+  }, [router]);
 
-  useEffect(() => {
-    setMobileNavOpen(false);
-  }, [pathname]);
+
 
   async function handleSignOut() {
     await authClient.signOut();
@@ -47,24 +45,25 @@ export default function DashboardLayout({
   ];
 
   const navLinks = (
-    <nav className="flex-1 px-3 py-4 space-y-1">
-      {navItems.map((item) => {
-        const active = pathname === item.href;
-        return (
-          <Link
-            key={item.href}
-            href={item.href}
-            className={
-              "block px-3 py-2 rounded-md text-sm " +
-              (active ? "bg-ink text-paper" : "text-ink hover:bg-hairline")
-            }
-          >
-            {item.label}
-          </Link>
-        );
-      })}
-    </nav>
-  );
+  <nav className="flex-1 px-3 py-4 space-y-1">
+    {navItems.map((item) => {
+      const active = pathname === item.href;
+      return (
+        <Link
+          key={item.href}
+          href={item.href}
+          onClick={() => setMobileNavOpen(false)}
+          className={
+            "block px-3 py-2 rounded-md text-sm " +
+            (active ? "bg-ink text-paper" : "text-ink hover:bg-hairline")
+          }
+        >
+          {item.label}
+        </Link>
+      );
+    })}
+  </nav>
+);
 
   return (
     <div className="min-h-screen flex">

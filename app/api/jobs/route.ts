@@ -14,7 +14,7 @@ const createJobSchema = z.object({
 });
 
 // GET /api/jobs — list only the logged-in user's jobs
-export async function GET(req: NextRequest) {
+export async function GET(_req: NextRequest) {
   try {
     const session = await getCurrentSession();
     if (!session) {
