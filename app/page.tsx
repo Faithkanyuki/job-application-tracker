@@ -45,7 +45,7 @@ export default function HomePage() {
               </button>
               {productOpen ? (
                 <div className="absolute top-full left-0 pt-3 w-64">
-                  <div className="bg-white border border-hairline rounded-lg shadow-sm p-2">
+                  <div className="bg-white border border-hairline rounded-lg shadow-xs p-2">
                     <a
                       href="#how-it-works"
                       className="block px-3 py-2 rounded-md hover:bg-paper"

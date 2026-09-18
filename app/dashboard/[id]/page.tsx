@@ -189,7 +189,7 @@ export default function JobDetailPage(
             id="status"
             value={status}
             onChange={(e) => setStatus(e.target.value)}
-            className="w-full rounded-md border border-gray-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="w-full rounded-md border border-gray-300 px-3 py-2 focus:outline-hidden focus:ring-2 focus:ring-blue-500"
           >
             <option value="SAVED">Saved</option>
             <option value="APPLIED">Applied</option>
@@ -209,7 +209,7 @@ export default function JobDetailPage(
             maxLength={2000}
             value={notes}
             onChange={(e) => setNotes(e.target.value)}
-            className="w-full rounded-md border border-gray-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="w-full rounded-md border border-gray-300 px-3 py-2 focus:outline-hidden focus:ring-2 focus:ring-blue-500"
           />
         </div>
 

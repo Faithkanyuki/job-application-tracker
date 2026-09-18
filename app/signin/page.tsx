@@ -96,7 +96,7 @@ export default function SignInPage() {
                 required
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="w-full rounded-md border border-hairline px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-amber"
+                className="w-full rounded-md border border-hairline px-3 py-2 text-sm focus:outline-hidden focus:ring-2 focus:ring-amber"
               />
             </div>
             <div>
@@ -109,7 +109,7 @@ export default function SignInPage() {
                 required
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                className="w-full rounded-md border border-hairline px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-amber"
+                className="w-full rounded-md border border-hairline px-3 py-2 text-sm focus:outline-hidden focus:ring-2 focus:ring-amber"
               />
             </div>
 

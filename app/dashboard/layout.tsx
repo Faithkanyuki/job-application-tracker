@@ -127,7 +127,7 @@ export default function DashboardLayout({
           </button>
 
           {menuOpen ? (
-            <div className="absolute right-4 md:right-6 top-14 w-48 bg-white border border-hairline rounded-md shadow-sm py-1 z-10">
+            <div className="absolute right-4 md:right-6 top-14 w-48 bg-white border border-hairline rounded-md shadow-xs py-1 z-10">
               <div className="px-4 py-2 text-xs text-stone border-b border-hairline">
                 {user?.email}
               </div>

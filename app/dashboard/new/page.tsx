@@ -60,7 +60,7 @@ export default function NewJobPage() {
             maxLength={200}
             value={title}
             onChange={(e) => setTitle(e.target.value)}
-            className="w-full rounded-md border border-gray-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="w-full rounded-md border border-gray-300 px-3 py-2 focus:outline-hidden focus:ring-2 focus:ring-blue-500"
           />
         </div>
 
@@ -75,7 +75,7 @@ export default function NewJobPage() {
             maxLength={200}
             value={company}
             onChange={(e) => setCompany(e.target.value)}
-            className="w-full rounded-md border border-gray-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="w-full rounded-md border border-gray-300 px-3 py-2 focus:outline-hidden focus:ring-2 focus:ring-blue-500"
           />
         </div>
 
@@ -89,7 +89,7 @@ export default function NewJobPage() {
             maxLength={200}
             value={location}
             onChange={(e) => setLocation(e.target.value)}
-            className="w-full rounded-md border border-gray-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="w-full rounded-md border border-gray-300 px-3 py-2 focus:outline-hidden focus:ring-2 focus:ring-blue-500"
           />
         </div>
 
@@ -104,7 +104,7 @@ export default function NewJobPage() {
             value={url}
             onChange={(e) => setUrl(e.target.value)}
             placeholder="https://..."
-            className="w-full rounded-md border border-gray-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="w-full rounded-md border border-gray-300 px-3 py-2 focus:outline-hidden focus:ring-2 focus:ring-blue-500"
           />
         </div>
 
@@ -121,7 +121,7 @@ export default function NewJobPage() {
             maxLength={5000}
             value={description}
             onChange={(e) => setDescription(e.target.value)}
-            className="w-full rounded-md border border-gray-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="w-full rounded-md border border-gray-300 px-3 py-2 focus:outline-hidden focus:ring-2 focus:ring-blue-500"
           />
         </div>
 
