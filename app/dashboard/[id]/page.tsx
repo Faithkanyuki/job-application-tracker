@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback, use } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 
@@ -22,11 +22,12 @@ interface Application {
   updatedAt: string;
 }
 
-export default function JobDetailPage({
-  params,
-}: {
-  params: { id: string };
-}) {
+export default function JobDetailPage(
+  props: {
+    params: Promise<{ id: string }>;
+  }
+) {
+  const params = use(props.params);
   const router = useRouter();
   const [job, setJob] = useState<Job | null>(null);
   const [application, setApplication] = useState<Application | null>(null);
@@ -37,11 +38,7 @@ export default function JobDetailPage({
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
 
-  useEffect(() => {
-    loadData();
-  }, []);
-
-  async function loadData() {
+  const loadData = useCallback(async () => {
     try {
       const jobRes = await fetch(`/api/jobs/${params.id}`);
       if (jobRes.status === 401) {
@@ -72,7 +69,12 @@ export default function JobDetailPage({
     } finally {
       setLoading(false);
     }
-  }
+  }, [router, params.id]);
+
+  useEffect(() => {
+  // eslint-disable-next-line react-hooks/set-state-in-effect -- intentional fetch-on-mount; loadData sets loading/error/data state after an async request resolves, which is the standard pattern without introducing a data-fetching library
+  loadData();
+}, [loadData]);
 
   async function handleSaveApplication(e: React.FormEvent) {
     e.preventDefault();
@@ -156,22 +158,22 @@ export default function JobDetailPage({
           {job.company}
           {job.location ? ` — ${job.location}` : ""}
         </p>
-                {job.url ? (
-  <a
-    href={job.url}
-    target="_blank"
-    rel="noopener noreferrer"
-    className="text-sm text-blue-600 hover:underline"
-  >
-    View job posting
-  </a>
-) : null}
+        {job.url ? (
+          <a
+            href={job.url}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-sm text-blue-600 hover:underline"
+          >
+            View job posting
+          </a>
+        ) : null}
         {job.description && (
           <p className="text-sm text-gray-600 mt-2">{job.description}</p>
         )}
       </div>
 
-            <h2 className="text-lg font-medium mb-1">Application tracking</h2>
+      <h2 className="text-lg font-medium mb-1">Application tracking</h2>
       <p className="text-sm text-stone mb-4">
         {application
           ? "Last updated " + new Date(application.updatedAt || "").toLocaleDateString()
@@ -187,7 +189,7 @@ export default function JobDetailPage({
             id="status"
             value={status}
             onChange={(e) => setStatus(e.target.value)}
-            className="w-full rounded-md border border-gray-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="w-full rounded-md border border-gray-300 px-3 py-2 focus:outline-hidden focus:ring-2 focus:ring-blue-500"
           >
             <option value="SAVED">Saved</option>
             <option value="APPLIED">Applied</option>
@@ -207,7 +209,7 @@ export default function JobDetailPage({
             maxLength={2000}
             value={notes}
             onChange={(e) => setNotes(e.target.value)}
-            className="w-full rounded-md border border-gray-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="w-full rounded-md border border-gray-300 px-3 py-2 focus:outline-hidden focus:ring-2 focus:ring-blue-500"
           />
         </div>
 

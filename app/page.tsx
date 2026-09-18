@@ -18,7 +18,7 @@ export default function HomePage() {
         setChecking(false);
       }
     });
-  }, []);
+  }, [router]);
 
   if (checking) {
     return <div className="min-h-screen bg-paper" />;
@@ -45,7 +45,7 @@ export default function HomePage() {
               </button>
               {productOpen ? (
                 <div className="absolute top-full left-0 pt-3 w-64">
-                  <div className="bg-white border border-hairline rounded-lg shadow-sm p-2">
+                  <div className="bg-white border border-hairline rounded-lg shadow-xs p-2">
                     <a
                       href="#how-it-works"
                       className="block px-3 py-2 rounded-md hover:bg-paper"
@@ -97,7 +97,7 @@ export default function HomePage() {
           </h1>
           <p className="text-stone mt-5 text-lg max-w-md">
             Job hunting means juggling dozens of roles at once. Save the ones
-            you're interested in, track where each one stands, and never lose
+            you&apos;re interested in, track where each one stands, and never lose
             track of what happens next.
           </p>
           <div className="mt-8 flex items-center gap-4">
@@ -128,7 +128,7 @@ export default function HomePage() {
               See your pipeline at a glance
             </h2>
             <p className="text-sm text-stone mb-6 max-w-sm">
-              Every role you're tracking, its current stage, and what's
+              Every role you&apos;re tracking, its current stage, and what&apos;
               waiting on you next — all on one screen, updated the moment
               anything changes.
             </p>

@@ -30,11 +30,9 @@ export default function DashboardLayout({
       }
       setUser(data.user);
     });
-  }, []);
+  }, [router]);
 
-  useEffect(() => {
-    setMobileNavOpen(false);
-  }, [pathname]);
+
 
   async function handleSignOut() {
     await authClient.signOut();
@@ -47,24 +45,25 @@ export default function DashboardLayout({
   ];
 
   const navLinks = (
-    <nav className="flex-1 px-3 py-4 space-y-1">
-      {navItems.map((item) => {
-        const active = pathname === item.href;
-        return (
-          <Link
-            key={item.href}
-            href={item.href}
-            className={
-              "block px-3 py-2 rounded-md text-sm " +
-              (active ? "bg-ink text-paper" : "text-ink hover:bg-hairline")
-            }
-          >
-            {item.label}
-          </Link>
-        );
-      })}
-    </nav>
-  );
+  <nav className="flex-1 px-3 py-4 space-y-1">
+    {navItems.map((item) => {
+      const active = pathname === item.href;
+      return (
+        <Link
+          key={item.href}
+          href={item.href}
+          onClick={() => setMobileNavOpen(false)}
+          className={
+            "block px-3 py-2 rounded-md text-sm " +
+            (active ? "bg-ink text-paper" : "text-ink hover:bg-hairline")
+          }
+        >
+          {item.label}
+        </Link>
+      );
+    })}
+  </nav>
+);
 
   return (
     <div className="min-h-screen flex">
@@ -128,7 +127,7 @@ export default function DashboardLayout({
           </button>
 
           {menuOpen ? (
-            <div className="absolute right-4 md:right-6 top-14 w-48 bg-white border border-hairline rounded-md shadow-sm py-1 z-10">
+            <div className="absolute right-4 md:right-6 top-14 w-48 bg-white border border-hairline rounded-md shadow-xs py-1 z-10">
               <div className="px-4 py-2 text-xs text-stone border-b border-hairline">
                 {user?.email}
               </div>

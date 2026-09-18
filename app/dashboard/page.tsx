@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 
@@ -40,11 +40,7 @@ export default function DashboardPage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
-  useEffect(() => {
-    loadData();
-  }, []);
-
-  async function loadData() {
+  const loadData = useCallback(async () => {
     try {
       const jobsRes = await fetch("/api/jobs");
       if (jobsRes.status === 401) {
@@ -66,7 +62,12 @@ export default function DashboardPage() {
     } finally {
       setLoading(false);
     }
-  }
+  }, [router]);
+
+  useEffect(() => {
+  // eslint-disable-next-line react-hooks/set-state-in-effect -- intentional fetch-on-mount; loadData sets loading/error/data state after an async request resolves, which is the standard pattern without introducing a data-fetching library
+  loadData();
+}, [loadData]);
 
   function statusFor(jobId: string) {
     const app = applications.find((a) => a.jobId === jobId);
@@ -105,7 +106,7 @@ export default function DashboardPage() {
             Nothing tracked yet
           </p>
           <p className="text-sm text-stone mb-5">
-            Add the first job you're interested in to start keeping track.
+            Add the first job you&apos;re interested in to start keeping track.
           </p>
           <Link
             href="/dashboard/new"

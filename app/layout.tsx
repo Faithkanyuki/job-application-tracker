@@ -4,12 +4,12 @@ import "./globals.css";
 
 const inter = Inter({
   subsets: ["latin"],
-  variable: "--font-sans",
+  variable: "--font-inter",
 });
 
 const sourceSerif = Source_Serif_4({
   subsets: ["latin"],
-  variable: "--font-serif",
+  variable: "--font-source-serif",
 });
 
 export const metadata: Metadata = {

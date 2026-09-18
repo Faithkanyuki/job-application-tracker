@@ -11,18 +11,20 @@ Users sign up (via email/password or Google/GitHub), then manage a personal list
 
 ## Tech Stack
 
-- **Framework:** Next.js 14 (App Router) — frontend and backend in one project
+- **Framework:** Next.js 16 (App Router, Turbopack) — frontend and backend in one project
 - **Language:** TypeScript
 - **Database:** PostgreSQL (hosted on [Neon](https://neon.tech))
 - **ORM:** Drizzle ORM + `drizzle-kit` for schema and migrations
 - **Auth:** [Better Auth](https://www.better-auth.com/) — email/password plus Google and GitHub OAuth
 - **Validation:** Zod
-- **Styling:** Tailwind CSS 3, custom design tokens (serif/sans type pairing, warm paper palette)
+- **Styling:** Tailwind CSS v4, custom design tokens defined via CSS `@theme` (serif/sans type pairing, warm paper palette)
+- **UI runtime:** React 19
+- **Linting:** ESLint 9 (flat config) with `eslint-config-next`
 
 ## Getting Started
 
 ### Prerequisites
-- Node.js 18+
+- Node.js **20.9.0 or later** (required by Next.js 16)
 - A PostgreSQL database (e.g. a free [Neon](https://neon.tech) project)
 - A Google Cloud OAuth client and a GitHub OAuth App (for social login — see below)
 
@@ -72,8 +74,9 @@ Visit `http://localhost:3000`.
 
 ### Other useful commands
 ```bash
-npm run build            # production build
+npm run build            # production build (Turbopack)
 npm start                # run the production build
+npm run lint              # run ESLint (flat config, via eslint.config.mjs)
 npx drizzle-kit studio   # visual database browser
 npx drizzle-kit generate # create a new migration after schema changes
 ```
@@ -132,7 +135,7 @@ All Better Auth endpoints are handled by the single catch-all route at `app/api/
 
 **Validation.** All input is validated with Zod at the API layer — required fields, string length limits, valid URL format, and enum whitelisting for `status` — backed by native Postgres enum types and foreign key constraints as a database-level backstop.
 
-**Route protection.** Middleware checks for the presence of Better Auth's session cookie before rendering `/dashboard/*` pages, redirecting unauthenticated visitors to `/signin` before any page content loads. This is a fast, Edge-compatible existence check, not full cryptographic verification — the actual security boundary is the API routes, which call `auth.api.getSession()` to fully verify the session against the database on every request.
+**Route protection.** `proxy.ts` (Next.js 16's replacement for the old `middleware.ts` convention) checks for the presence of Better Auth's session cookie before rendering `/dashboard/*` pages, redirecting unauthenticated visitors to `/signin` before any page content loads. This is a fast, Node-runtime existence check, not full cryptographic verification — the actual security boundary is the API routes, which call `auth.api.getSession()` to fully verify the session against the database on every request.
 
 **Error handling.** Every route wraps its logic in try/catch; unexpected errors are logged server-side but only a generic message is returned to the client — no stack traces or database details are ever exposed.
 
@@ -155,7 +158,7 @@ app/
 │   ├── page.tsx       — job list with status badges
 │   ├── new/page.tsx
 │   └── [id]/page.tsx  — job detail + application tracking form
-├── layout.tsx, page.tsx (landing page), globals.css
+├── layout.tsx, page.tsx (landing page), globals.css   — globals.css also holds the Tailwind v4 `@theme` design tokens
 lib/
 ├── db/
 │   ├── index.ts        — Drizzle client
@@ -165,5 +168,15 @@ lib/
 ├── auth-client.ts — Better Auth client (signUp, signIn, signOut, useSession)
 └── getSession.ts  — server-side session lookup for API routes
 drizzle.config.ts
-middleware.ts       — session-cookie existence check for route protection
+eslint.config.mjs   — ESLint 9 flat config (eslint-config-next)
+proxy.ts            — session-cookie existence check for route protection (Next.js 16's renamed middleware convention)
 ```
+
+## Upgrade Notes
+
+This project was originally built on Next.js 14.2.5 and Tailwind CSS 3.4.10, then migrated to Next.js 16 / React 19 / Tailwind CSS v4 / ESLint 9. Notable changes made during that migration:
+- Adopted the async `params`/`headers()`/`cookies()` request APIs introduced in Next.js 15 across all dynamic API routes and the job detail page.
+- Renamed `middleware.ts` to `proxy.ts` per the Next.js 16 convention.
+- Migrated ESLint from the removed `next lint` command / `.eslintrc` format to a standalone `eslint.config.mjs` flat config running on ESLint 9.
+- Migrated `tailwind.config.js`'s theme (colors, fonts) into a CSS-native `@theme` block in `app/globals.css`, and renamed the `next/font` CSS variable names (`--font-inter` / `--font-source-serif`) to avoid a naming collision with Tailwind v4's own `--font-sans` / `--font-serif` theme keys.
+- Reworked client-side data-fetching effects (`app/dashboard/page.tsx`, `app/dashboard/[id]/page.tsx`) to satisfy React's newer `set-state-in-effect` and hook-ordering lint rules.

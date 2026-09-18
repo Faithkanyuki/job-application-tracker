@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
-import { eq, and } from "drizzle-orm";
+import { eq } from "drizzle-orm";
 import { db } from "@/lib/db";
 import { applications, jobs } from "@/lib/db/schema";
 import { getCurrentSession } from "@/lib/getSession";
@@ -15,7 +15,7 @@ const createApplicationSchema = z.object({
 });
 
 // GET /api/applications — list only the logged-in user's applications
-export async function GET(req: NextRequest) {
+export async function GET(_req: NextRequest) {
   try {
     const session = await getCurrentSession();
     if (!session) {
